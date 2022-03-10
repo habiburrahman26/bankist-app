@@ -13,9 +13,13 @@
   --color-gray-dark-1: #777;
   --color-gray-dark-2: #888;
   --color-dark-green: #39b385;
+  --color-dark-green-2: #66c873;
   --color-light-green: #9be15d;
   --color-dark-pink: #e52a5a;
+  --color-dark-pink-2: #f5465d;
   --color-light-pink: #ff585f;
+  --color-dark-yellow: #ffb003;
+  --color-light-yellow: #ffcb03;
 }
 
 html {
@@ -210,11 +214,11 @@ nav {
 
 .summary__value--in,
 .summary__value--interest {
-  color: #66c873;
+  color: var(--color-dark-green-2);
 }
 
 .summary__value--out {
-  color: #f5465d;
+  color: var(--color-dark-pink-2);
 }
 
 .btn--sort {
@@ -224,4 +228,82 @@ nav {
   font-size: 1.3rem;
   font-weight: 500;
   cursor: pointer;
+}
+
+/* Opetaion */
+.operation {
+  border-radius: 1rem;
+  padding: 3rem 4rem;
+  color: #333;
+}
+
+.operation--transfer {
+  background-image: linear-gradient(
+    to top left,
+    var(--color-dark-yellow),
+    var(--color-light-yellow)
+  );
+}
+
+.operation--loan {
+  background-image: linear-gradient(
+    to top left,
+    var(--color-dark-green),
+    var(--color-light-green)
+  );
+}
+
+.operation--close {
+  background-image: linear-gradient(
+    to top left,
+    var(--color-dark-pink),
+    var(--color-light-pink)
+  );
+}
+
+h2 {
+  margin-bottom: 1.5rem;
+  font-size: 1.7rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.form {
+  display: grid;
+  grid-template-columns: 2.5fr 2.5fr 1fr;
+  grid-template-rows: auto auto;
+  gap: 0.4rem 1rem;
+}
+
+.form__input {
+  width: 100%;
+  background-color: rgba(255, 255, 255, 0.4);
+  border: none;
+  font-family: inherit;
+  font-size: 1.5rem;
+  text-align: center;
+  color: #333;
+  padding: 0.3rem 1rem;
+  border-radius: 0.7rem;
+  transition: all 0.3s;
+}
+
+.form__input:focus {
+  outline: none;
+  background-color: rgba(255, 255, 255, 0.6);
+}
+
+
+.form__btn {
+  border: none;
+  border-radius: 0.7rem;
+  font-size: 1.8rem;
+  background-color: #fff;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.form__btn:focus {
+  outline: none;
+  background-color: rgba(255, 255, 255, 0.8);
 }
