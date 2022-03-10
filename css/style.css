@@ -12,6 +12,10 @@
   --color-gray-2: #bbb;
   --color-gray-dark-1: #777;
   --color-gray-dark-2: #888;
+  --color-dark-green: #39b385;
+  --color-light-green: #9be15d;
+  --color-dark-pink: #e52a5a;
+  --color-light-pink: #ff585f;
 }
 
 html {
@@ -87,14 +91,14 @@ nav {
 }
 
 /* ********************************
-    MAIN
+    MAIN APP
 ************************************/
-
 .app {
   max-width: 100rem;
   margin: 4rem auto;
   display: grid;
   grid-template-columns: 4fr 3fr;
+  /* grid-template-rows: auto repeat(3, 15rem) auto; */
   grid-template-rows: auto repeat(3, 15rem) auto;
   gap: 2rem;
 
@@ -125,4 +129,58 @@ nav {
 .balance__value {
   font-size: 4.5rem;
   font-weight: 400;
+}
+
+/* *****************************
+    MOVEMENTS
+*********************************/
+.movements {
+  grid-row: 2 / span 3;
+  background-color: var(--color-white);
+  border-radius: 1rem;
+  overflow: scroll;
+}
+
+.movements__row {
+  padding: 2.25rem 4rem;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #eee;
+}
+
+.movements__type {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: var(--color-white);
+  padding: 0.1rem 1rem;
+  border-radius: 10rem;
+  text-transform: uppercase;
+  margin-right: 2rem;
+}
+
+.movements__type--deposit {
+  background-image: linear-gradient(
+    to top right,
+    var(--color-dark-green),
+    var(--color-light-green)
+  );
+}
+
+.movements__type--withdrawal {
+  background-image: linear-gradient(
+    to top right,
+    var(--color-dark-pink),
+    var(--color-light-pink)
+  );
+}
+
+.movements__date {
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+.movements__value {
+  font-size: 1.7rem;
+  margin-left: auto;
 }
