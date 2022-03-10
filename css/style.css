@@ -7,6 +7,10 @@
 :root {
   --body-text: #444;
   --body-bg: #f3f3f3;
+  --color-white: #fff;
+  --color-gray-1: #ccc;
+  --color-gray-2: #bbb;
+  --color-gray-dark-1: #777;
 }
 
 html {
@@ -32,4 +36,51 @@ nav {
 .welcome {
   font-size: 1.9rem;
   font-weight: 500;
+}
+
+.logo {
+  width: 5.25rem;
+}
+
+.login {
+  display: flex;
+  align-items: center;
+}
+
+.login__input {
+  border: none;
+  padding: 0.5rem 2rem;
+  font-size: 1.6rem;
+  font-family: inherit;
+  text-align: center;
+  width: 12rem;
+  border-radius: 10rem;
+  margin-right: 1rem;
+  color: inherit;
+  border: 1px solid var(--color-white);
+  transition: all 0.3s;
+}
+
+.login__input:focus {
+  outline: none;
+  border: 1px solid var(--color-gray-1);
+}
+
+.login__input::placeholder {
+  color: var(--color-gray-2);
+}
+
+.login__btn {
+  border: none;
+  background: none;
+  font-size: 2.2rem;
+  color: inherit;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.login__btn:hover,
+.login__btn:focus {
+  outline: none;
+  color: var(--color-gray-dark-1);
 }
