@@ -62,6 +62,9 @@ const inputLoanAmount = document.querySelector('.form__input--loan-amount');
 const inputCloseUsername = document.querySelector('.form__input--user');
 const inputClosePin = document.querySelector('.form__input--pin');
 
+// hide app
+containerApp.style.opacity = 0;
+
 // FUNCTION
 
 // display movements
@@ -81,12 +84,11 @@ const displayMovements = function (acc) {
   });
 };
 
-displayMovements(account1);
 
 const calDisplayMovements = function (acc) {
   //balance
-  const balance = acc.movements.reduce((acc, val) => acc + val, 0);
-  labelBalance.textContent = balance + '€';
+  acc.balance = acc.movements.reduce((acc, val) => acc + val, 0);
+  labelBalance.textContent = acc.balance + '€';
 
   // total deposit
   const deposit = acc.movements
@@ -107,10 +109,14 @@ const calDisplayMovements = function (acc) {
     .filter(int => int > 1)
     .reduce((acc, val) => acc + val, 0);
 
-  labelSumInterest.textContent = interest+'€';
+  labelSumInterest.textContent = interest + '€';
 };
 
-calDisplayMovements(account1);
+// UPDATE UI
+const updateUI = function(acc){
+  displayMovements(acc);
+  calDisplayMovements(acc);
+}
 
 // create username
 const createUsername = function (accounts) {
@@ -145,11 +151,33 @@ btnLogin.addEventListener('click', function (e) {
     // show UI
     containerApp.style.opacity = 100;
 
-    // displayMovements(account1);
+    // updateUI
+    updateUI(currentAccount);
   }
 
   //clear input field
   inputLoginUsername.value = inputLoginPin.value = '';
 });
 
-containerApp.style.opacity = 100;
+btnTransfer.addEventListener('click', function (e) {
+  e.preventDefault();
+
+  const transferAmount = +inputTransferAmount.value;
+  const reciverAccount = accounts.find(
+    acc => acc.username === inputTransferTo.value
+  );
+
+  // transfer account doesn't be the current account
+  if (
+    transferAmount > 0 &&
+    reciverAccount &&
+    currentAccount.balance >= transferAmount &&
+    reciverAccount?.username !== currentAccount.username
+  ) {
+    reciverAccount.movements.push(transferAmount);
+    currentAccount.movements.push(-transferAmount);
+
+    // updateUI
+    updateUI(currentAccount);
+  }
+});
