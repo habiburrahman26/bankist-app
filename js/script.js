@@ -84,6 +84,10 @@ const displayMovements = function (acc) {
 displayMovements(account1);
 
 const calDisplayMovements = function (acc) {
+  //balance
+  const balance = acc.movements.reduce((acc, val) => acc + val, 0);
+  labelBalance.textContent = balance + '€';
+
   // total deposit
   const deposit = acc.movements
     .filter(mov => mov > 0)
@@ -95,6 +99,15 @@ const calDisplayMovements = function (acc) {
     .filter(mov => mov < 0)
     .reduce((acc, val) => acc + val, 0);
   labelSumOut.textContent = Math.abs(withdrawal) + '€';
+
+  //interest
+  const interest = acc.movements
+    .filter(mov => mov > 0)
+    .map(deposit => (deposit * acc.interestRate) / 100)
+    .filter(int => int > 1)
+    .reduce((acc, val) => acc + val, 0);
+
+  labelSumInterest.textContent = interest+'€';
 };
 
 calDisplayMovements(account1);
