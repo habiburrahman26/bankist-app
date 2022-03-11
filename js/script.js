@@ -84,11 +84,10 @@ const displayMovements = function (acc) {
   });
 };
 
-
 const calDisplayMovements = function (acc) {
   //balance
   acc.balance = acc.movements.reduce((acc, val) => acc + val, 0);
-  labelBalance.textContent = acc.balance + '€';
+  labelBalance.textContent = `${acc.balance}€`;
 
   // total deposit
   const deposit = acc.movements
@@ -113,10 +112,10 @@ const calDisplayMovements = function (acc) {
 };
 
 // UPDATE UI
-const updateUI = function(acc){
+const updateUI = function (acc) {
   displayMovements(acc);
   calDisplayMovements(acc);
-}
+};
 
 // create username
 const createUsername = function (accounts) {
@@ -166,6 +165,7 @@ btnTransfer.addEventListener('click', function (e) {
   const reciverAccount = accounts.find(
     acc => acc.username === inputTransferTo.value
   );
+  inputTransferAmount.value = inputTransferTo.value = '';
 
   // transfer account doesn't be the current account
   if (
@@ -180,4 +180,18 @@ btnTransfer.addEventListener('click', function (e) {
     // updateUI
     updateUI(currentAccount);
   }
+});
+
+btnLoan.addEventListener('click', function (e) {
+  e.preventDefault();
+  const amount = +inputLoanAmount.value;
+
+  if(amount>0){
+    // Add movement
+    currentAccount.movements.push(amount);
+
+    // Update UI
+    updateUI(currentAccount);
+  }
+  inputLoanAmount.value = '';
 });
