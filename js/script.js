@@ -81,8 +81,6 @@ const displayMovements = function (acc) {
   });
 };
 
-displayMovements(account1);
-
 // create username
 const createUsername = function (accounts) {
   accounts.forEach(acc => {
@@ -95,3 +93,29 @@ const createUsername = function (accounts) {
 };
 
 createUsername(accounts);
+
+//which account is logged in
+let currentAccount;
+
+btnLogin.addEventListener('click', function (e) {
+  e.preventDefault();
+
+  currentAccount = accounts.find(
+    acc => acc.username === inputLoginUsername.value
+  );
+
+  if (currentAccount.pin === +inputLoginPin.value) {
+    // display welcome message
+    labelWelcome.innerText = `Welcome back, ${currentAccount.owner.split()[0]}`;
+
+    // show UI
+    containerApp.style.opacity = 100;
+
+    displayMovements(currentAccount);
+  }
+
+  //clear input field
+  inputLoginUsername.value = inputLoginPin.value = '';
+});
+
+containerApp.style.opacity = 0;
