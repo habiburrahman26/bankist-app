@@ -90,7 +90,11 @@ const calDisplayMovements = function (acc) {
     .reduce((acc, val) => acc + val, 0);
   labelSumIn.textContent = deposit + '€';
 
-  
+  //total withdrawal
+  const withdrawal = acc.movements
+    .filter(mov => mov < 0)
+    .reduce((acc, val) => acc + val, 0);
+  labelSumOut.textContent = Math.abs(withdrawal) + '€';
 };
 
 calDisplayMovements(account1);
