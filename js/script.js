@@ -31,14 +31,14 @@ const account2 = {
   interestRate: 1.5,
   pin: 2222,
   movementsDates: [
-    '2019-11-01T13:15:33.035Z',
-    '2019-11-30T09:48:16.867Z',
-    '2019-12-25T06:04:23.907Z',
-    '2020-01-25T14:18:46.235Z',
-    '2020-02-05T16:33:06.386Z',
-    '2022-03-8T14:43:26.374Z',
-    '2022-03-9T18:49:59.371Z',
-    '2022-03-10T12:01:20.894Z',
+    '2019-11-18T21:31:17.178Z',
+    '2019-12-23T07:42:02.383Z',
+    '2020-01-28T09:15:04.904Z',
+    '2020-04-01T10:17:24.185Z',
+    '2020-05-08T14:11:59.604Z',
+    '2022-03-08T16:01:17.194Z',
+    '2022-03-09T16:36:17.929Z',
+    '2022-03-10T10:51:36.790Z',
   ],
   currency: 'BDT',
   locale: 'bn-BD',
@@ -50,14 +50,14 @@ const account3 = {
   interestRate: 0.7,
   pin: 3333,
   movementsDates: [
-    '2019-11-01T13:15:33.035Z',
-    '2019-11-30T09:48:16.867Z',
-    '2019-12-25T06:04:23.907Z',
-    '2020-01-25T14:18:46.235Z',
-    '2020-02-05T16:33:06.386Z',
-    '2020-04-10T14:43:26.374Z',
-    '2020-06-25T18:49:59.371Z',
-    '2022-03-10T12:01:20.894Z',
+    '2019-11-18T21:31:17.178Z',
+    '2019-12-23T07:42:02.383Z',
+    '2020-01-28T09:15:04.904Z',
+    '2020-04-01T10:17:24.185Z',
+    '2020-05-08T14:11:59.604Z',
+    '2022-03-08T16:01:17.194Z',
+    '2022-03-09T16:36:17.929Z',
+    '2022-03-10T10:51:36.790Z',
   ],
   currency: 'USD',
   locale: 'en-US',
@@ -69,14 +69,14 @@ const account4 = {
   interestRate: 1,
   pin: 4444,
   movementsDates: [
-    '2019-11-01T13:15:33.035Z',
-    '2019-11-30T09:48:16.867Z',
-    '2019-12-25T06:04:23.907Z',
-    '2020-01-25T14:18:46.235Z',
-    '2020-02-05T16:33:06.386Z',
-    '2020-04-10T14:43:26.374Z',
-    '2020-06-25T18:49:59.371Z',
-    '2020-07-26T12:01:20.894Z',
+    '2019-11-18T21:31:17.178Z',
+    '2019-12-23T07:42:02.383Z',
+    '2020-01-28T09:15:04.904Z',
+    '2020-04-01T10:17:24.185Z',
+    '2020-05-08T14:11:59.604Z',
+    '2022-03-08T16:01:17.194Z',
+    '2022-03-09T16:36:17.929Z',
+    '2022-03-10T10:51:36.790Z',
   ],
   currency: '',
   locale: 'en-US',
@@ -121,19 +121,26 @@ const dateFormatter = function (date, locale) {
 
   const daysPassed = formater(new Date(), date);
 
-  if (daysPassed === 1) return 'Today';
-  if (daysPassed === 2) return 'Yestarday';
+  if (daysPassed === 0) return 'Today';
+  if (daysPassed === 1) return 'Yestarday';
   if (daysPassed <= 7) return `${daysPassed} days ago`;
 
   return new Intl.DateTimeFormat(locale).format(date);
+};
+
+const balanceFormatter = function (mov, currency, locale) {
+  return new Intl.NumberFormat(locale, {
+    style: 'currency',
+    currency: currency,
+  }).format(mov);
 };
 
 // display movements
 const displayMovements = function (accs) {
   containerMovements.textContent = '';
 
-  accs.movements.forEach((acc, i) => {
-    const movs = acc > 0 ? 'deposit' : 'withdrawal';
+  accs.movements.forEach((mov, i) => {
+    const movs = mov > 0 ? 'deposit' : 'withdrawal';
 
     const date = new Date(accs.movementsDates[i]);
     const formateDate = dateFormatter(date, accs.locale);
@@ -142,7 +149,11 @@ const displayMovements = function (accs) {
     <div class="movements__row">
           <div class="movements__type movements__type--${movs}">2 ${movs}</div>
           <div class="movements__date">${formateDate}</div>
-          <div class="movements__value">${acc}</div>
+          <div class="movements__value">${balanceFormatter(
+            mov,
+            accs.currency,
+            accs.locale
+          )}</div>
         </div>
     `;
 
@@ -153,19 +164,31 @@ const displayMovements = function (accs) {
 const calDisplayMovements = function (acc) {
   //balance
   acc.balance = acc.movements.reduce((acc, val) => acc + val, 0);
-  labelBalance.textContent = `${acc.balance}€`;
+  labelBalance.textContent = `${balanceFormatter(
+    acc.balance,
+    acc.currency,
+    acc.locale
+  )}`;
 
   // total deposit
   const deposit = acc.movements
     .filter(mov => mov > 0)
     .reduce((acc, val) => acc + val, 0);
-  labelSumIn.textContent = deposit + '€';
+  labelSumIn.textContent = `${balanceFormatter(
+    deposit,
+    acc.currency,
+    acc.locale
+  )}`;
 
   //total withdrawal
   const withdrawal = acc.movements
     .filter(mov => mov < 0)
     .reduce((acc, val) => acc + val, 0);
-  labelSumOut.textContent = Math.abs(withdrawal) + '€';
+  labelSumOut.textContent = `${balanceFormatter(
+    Math.abs(withdrawal),
+    acc.currency,
+    acc.locale
+  )}`;
 
   //interest
   const interest = acc.movements
@@ -174,7 +197,11 @@ const calDisplayMovements = function (acc) {
     .filter(int => int > 1)
     .reduce((acc, val) => acc + val, 0);
 
-  labelSumInterest.textContent = interest + '€';
+  labelSumInterest.textContent = `${balanceFormatter(
+    interest,
+    acc.currency,
+    acc.locale
+  )}`;
 };
 
 // UPDATE UI
@@ -196,10 +223,29 @@ const createUsername = function (accounts) {
 
 createUsername(accounts);
 
+const startLogOutTime = function () {
+  let time = 120;
+
+  const tick = () => {
+    const min = String(Math.trunc(time / 60)).padStart(2, 0);
+    const second = String(time % 60).padStart(2, 0);
+    labelTimer.textContent = `${min}:${second}`;
+    time--;
+
+    if (time === 0) {
+      clearInterval(tick);
+      labelWelcome.textContent = 'Log in to get started';
+      containerApp.style.opacity = 0;
+    }
+  };
+
+  tick();
+  const timer = setInterval(tick, 1000);
+  return timer;
+};
+
 //which account is logged in
-let currentAccount = account1;
-containerApp.style.opacity = 100;
-updateUI(currentAccount);
+let currentAccount, timer;
 
 // LOGIN
 btnLogin.addEventListener('click', function (e) {
@@ -216,23 +262,27 @@ btnLogin.addEventListener('click', function (e) {
     }`;
 
     const now = new Date();
-
-    const opetions = {
+    const options = {
       hour: 'numeric',
       minute: 'numeric',
       day: 'numeric',
-      month: 'long',
+      month: 'numeric',
       year: 'numeric',
-      weekday: 'long',
+      // weekday: 'long',
     };
+
     const dateFormate = new Intl.DateTimeFormat(
       currentAccount.locale,
-      opetions
+      options
     ).format(now);
     labelDate.textContent = dateFormate;
 
     // show UI
     containerApp.style.opacity = 100;
+
+    // countdown start
+    if (timer) clearInterval(timer);
+    timer = startLogOutTime();
 
     // updateUI
     updateUI(currentAccount);
@@ -260,6 +310,13 @@ btnTransfer.addEventListener('click', function (e) {
   ) {
     reciverAccount.movements.push(transferAmount);
     currentAccount.movements.push(-transferAmount);
+    const now = new Date();
+    currentAccount.movementsDates.push(now.toISOString());
+    reciverAccount.movementsDates.push(now.toISOString());
+
+    // rest timer
+    clearInterval(timer);
+    timer = startLogOutTime();
 
     // updateUI
     updateUI(currentAccount);
@@ -273,6 +330,12 @@ btnLoan.addEventListener('click', function (e) {
   if (amount > 0) {
     // Add movement
     currentAccount.movements.push(amount);
+    const now = new Date();
+    currentAccount.movementsDates.push(now.toISOString());
+
+    // rest timer
+    clearInterval(timer);
+    timer = startLogOutTime();
 
     // Update UI
     updateUI(currentAccount);
