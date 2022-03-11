@@ -186,7 +186,7 @@ btnLoan.addEventListener('click', function (e) {
   e.preventDefault();
   const amount = +inputLoanAmount.value;
 
-  if(amount>0){
+  if (amount > 0) {
     // Add movement
     currentAccount.movements.push(amount);
 
@@ -194,4 +194,24 @@ btnLoan.addEventListener('click', function (e) {
     updateUI(currentAccount);
   }
   inputLoanAmount.value = '';
+});
+
+btnClose.addEventListener('click', function (e) {
+  e.preventDefault();
+
+  if (
+    inputCloseUsername.value === currentAccount.username &&
+    +inputClosePin.value === currentAccount.value
+  ) {
+    const deleteAccountIndex = accounts.findIndex(
+      acc =>
+        acc.username === inputCloseUsername.value &&
+        acc.pin === +inputClosePin.value
+    );
+
+    // delete account
+    accounts.splice(deleteAccountIndex, 1);
+    containerApp.style.opacity = 0;
+  }
+  inputCloseUsername.value = inputClosePin.value = '';
 });
