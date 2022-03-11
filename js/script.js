@@ -81,6 +81,20 @@ const displayMovements = function (acc) {
   });
 };
 
+displayMovements(account1);
+
+const calDisplayMovements = function (acc) {
+  // total deposit
+  const deposit = acc.movements
+    .filter(mov => mov > 0)
+    .reduce((acc, val) => acc + val, 0);
+  labelSumIn.textContent = deposit + '€';
+
+  
+};
+
+calDisplayMovements(account1);
+
 // create username
 const createUsername = function (accounts) {
   accounts.forEach(acc => {
@@ -97,6 +111,7 @@ createUsername(accounts);
 //which account is logged in
 let currentAccount;
 
+// LOGIN
 btnLogin.addEventListener('click', function (e) {
   e.preventDefault();
 
@@ -106,16 +121,18 @@ btnLogin.addEventListener('click', function (e) {
 
   if (currentAccount.pin === +inputLoginPin.value) {
     // display welcome message
-    labelWelcome.innerText = `Welcome back, ${currentAccount.owner.split()[0]}`;
+    labelWelcome.innerText = `Welcome back, ${
+      currentAccount.owner.split(' ')[0]
+    }`;
 
     // show UI
     containerApp.style.opacity = 100;
 
-    displayMovements(currentAccount);
+    // displayMovements(account1);
   }
 
   //clear input field
   inputLoginUsername.value = inputLoginPin.value = '';
 });
 
-containerApp.style.opacity = 0;
+containerApp.style.opacity = 100;
